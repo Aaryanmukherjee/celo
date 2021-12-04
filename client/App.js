@@ -1,8 +1,11 @@
 import React from 'react'
+
 import './global'
 import { web3, kit } from './root'
 import { Image, StyleSheet, Text, TextInput, Button, View, YellowBox } from 'react-native'
 import {Home} from "./components/Home"
+import {Market} from "./components/Market"
+
 import {   
   requestTxSig,
   waitForSignedTxs,
@@ -19,15 +22,24 @@ YellowBox.ignoreWarnings(['Warning: The provided value \'moz', 'Warning: The pro
 
 export default class App extends React.Component {
 
-  // Set the defaults for the state
-  state = {
-    address: 'Not logged in',
-    phoneNumber: 'Not logged in',
-    cUSDBalance: 'Not logged in',
-    helloWorldContract: {},
-    contractName: '',
-    textInput: ''
+
+  constructor(props){
+    super(props)
+    this.state = {
+      address: 'Not logged in',
+      phoneNumber: 'Not logged in',
+      cUSDBalance: 'Not logged in',
+      helloWorldContract: {},
+      contractName: '',
+      textInput: '',
+      supply: 0,
+      borrow: 0
+    }
+    this.handlePressSupply = this.handlePressSupply.bind(this);
+
   }
+  // Set the defaults for the state
+  
 
   // This function is called when the page successfully renders
   componentDidMount = async () => {
@@ -135,15 +147,42 @@ export default class App extends React.Component {
     this.setState({textInput: text})
   }
 
+  handlePressSupply = () => {
+    this.setState(prevState => {
+       return {supply: prevState.supply + 1}
+    })
+  }
+  handlePressBorrow = () => {
+    this.setState(prevState => {
+       return {borrow: prevState.borrow + 1}
+    })
+  }
+
   render(){
     return (
       <View style={styles.container}>
-        <Home></Home>
-        <Image resizeMode='contain' source={require("./assets/white-wallet-rings.png")}></Image>
+        <Home 
+          borrow = {this.state.borrow} 
+          supply = {this.state.supply}
+          
+        />
+
+        
+        <Market 
+          label = "Supply Markets"
+          onPress = {this.handlePressSupply}
+        />
+
+        <Market 
+          label = "Borrow Markets"
+          onPress = {this.handlePressBorrow}
+        />
+
+        {/* <Image resizeMode='contain' source={require("./assets/white-wallet-rings.png")}></Image>
         <Text>Open up client/App.js to start working on your app!</Text>
         
-        <Text style={styles.title}>Login first</Text>
-        <Button title="login()" 
+        <Text style={styles.title}>Login first</Text> */}
+        {/* <Button title="login()" 
           onPress={()=> this.login()} />
                 <Text style={styles.title}>Account Info:</Text>
         <Text>Current Account Address:</Text>
@@ -165,7 +204,7 @@ export default class App extends React.Component {
           value={this.state.textInput}
           />
         <Button style={{padding: 30}} title="update contract name" 
-          onPress={()=> this.write()} />
+          onPress={()=> this.write()} /> */}
       </View>
     );
   }
@@ -174,7 +213,7 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#35d07f',
+    backgroundColor: 'black',
     alignItems: 'center',
     justifyContent: 'center',
   },

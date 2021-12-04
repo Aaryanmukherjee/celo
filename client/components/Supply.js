@@ -4,4 +4,14 @@ import { Image, StyleSheet, Text, TextInput, Button, View, YellowBox } from 'rea
 
 export const Supply = () =>{
 
+    const styles = StyleSheet.create({    
+        main:{
+            
+        }
+    })
+    return(
+        <View>
+
+        </View>
+    )
 }
